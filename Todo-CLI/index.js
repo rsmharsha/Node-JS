@@ -32,11 +32,24 @@ program
   .description("List all todos")
   .action(() => {
     const todos = loadTodos();
-    if (!todos.length) return console.log("No todos yet.");
-    todos.forEach(t =>
-      console.log(`${t.id} [${t.done ? "x" : " "}] ${t.text}`)
-    );
+
+    if (todos.length === 0) {
+      console.log("No todos yet.");
+      return;
+    }
+
+    // preparing data for console.table
+    const tableData = todos.map(t => {
+      return {
+        ID: t.id,
+        Status: t.done === true ? "Done" : "Pending",
+        Task: t.text
+      };
+    });
+
+    console.table(tableData);
   });
+
 
 program
   .command("add <text...>")
